@@ -516,64 +516,127 @@ class HomeSection extends StatelessWidget {
           child: Center(
             child: Padding(
               padding: EdgeInsets.all(constraints.maxWidth < 600 ? 16 : 32),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    radius: constraints.maxWidth < 600 ? 60 : 80,
-                    backgroundImage: const AssetImage(
-                      'assets/images/profile.png',
-                    ),
-                  ),
-                  SizedBox(height: constraints.maxWidth < 600 ? 24 : 32),
-                  Text(
-                    'Suos Seyha',
-                    style: (constraints.maxWidth < 600
-                            ? Theme.of(context).textTheme.headlineLarge
-                            : Theme.of(context).textTheme.displayLarge)
-                        ?.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                  ),
-                  const SizedBox(height: 16),
-                  AnimatedTextKit(
-                    animatedTexts: [
-                      TyperAnimatedText(
-                        'Flutter Developer',
-                        textStyle: (constraints.maxWidth < 600
-                                ? Theme.of(context).textTheme.titleLarge
-                                : Theme.of(context).textTheme.headlineSmall)
-                            ?.copyWith(
-                              color: Theme.of(
-                                context,
-                              ).colorScheme.onSurface.withOpacity(0.7),
-                            ),
-                        speed: const Duration(milliseconds: 180),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: constraints.maxWidth < 600 ? 60 : 80,
+                      backgroundImage: const AssetImage(
+                        'assets/images/profile.png',
                       ),
-                    ],
-                    isRepeatingAnimation: false,
-                  ),
-                  const SizedBox(height: 32),
-                  Text(
-                    'Passionate about creating beautiful and functional mobile applications with Flutter',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(
-                        context,
-                      ).colorScheme.onSurface.withOpacity(0.6),
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 32),
-                  const HomeStats(),
-                  SizedBox(height: constraints.maxWidth < 600 ? 32 : 48),
-                  if (constraints.maxWidth < 600)
-                    // Mobile layout - stacked buttons
-                    Column(
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton.icon(
+                    SizedBox(height: constraints.maxWidth < 600 ? 24 : 32),
+                    Text(
+                      'Suos Seyha',
+                      style: (constraints.maxWidth < 600
+                              ? Theme.of(context).textTheme.headlineLarge
+                              : Theme.of(context).textTheme.displayLarge)
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                    ),
+                    const SizedBox(height: 16),
+                    AnimatedTextKit(
+                      animatedTexts: [
+                        TyperAnimatedText(
+                          'Flutter Developer',
+                          textStyle: (constraints.maxWidth < 600
+                                  ? Theme.of(context).textTheme.titleLarge
+                                  : Theme.of(context).textTheme.headlineSmall)
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurface.withOpacity(0.7),
+                              ),
+                          speed: const Duration(milliseconds: 180),
+                        ),
+                      ],
+                      isRepeatingAnimation: false,
+                    ),
+                    const SizedBox(height: 32),
+                    Text(
+                      'Passionate about creating beautiful and functional mobile applications with Flutter',
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.onSurface.withOpacity(0.6),
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 32),
+                    const HomeStats(),
+                    SizedBox(height: constraints.maxWidth < 600 ? 32 : 48),
+                    if (constraints.maxWidth < 600)
+                      // Mobile layout - stacked buttons
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: () async {
+                                final url =
+                                    '/Seyha_Suos.pdf'; // For web, this will work if the PDF is in the web/ directory
+                                final uri = Uri.parse(url);
+                                if (await launcher.canLaunchUrl(uri)) {
+                                  await launcher.launchUrl(
+                                    uri,
+                                    mode:
+                                        launcher.LaunchMode.externalApplication,
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text('Could not open CV'),
+                                      backgroundColor: Colors.red,
+                                      behavior: SnackBarBehavior.floating,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: const Icon(Icons.download),
+                              label: const Text('Download CV'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          SizedBox(
+                            width: double.infinity,
+                            child: OutlinedButton.icon(
+                              onPressed: () {
+                                Provider.of<PortfolioProvider>(
+                                      context,
+                                      listen: false,
+                                    ).selectedIndex =
+                                    4;
+                              },
+                              icon: const Icon(Icons.mail),
+                              label: const Text('Contact Me'),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 24,
+                                  vertical: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    else
+                      // Desktop layout - side by side buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton.icon(
                             onPressed: () async {
                               final url =
                                   '/Seyha_Suos.pdf'; // For web, this will work if the PDF is in the web/ directory
@@ -605,11 +668,8 @@ class HomeSection extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 12),
-                        SizedBox(
-                          width: double.infinity,
-                          child: OutlinedButton.icon(
+                          const SizedBox(width: 16),
+                          OutlinedButton.icon(
                             onPressed: () {
                               Provider.of<PortfolioProvider>(
                                     context,
@@ -626,67 +686,10 @@ class HomeSection extends StatelessWidget {
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    )
-                  else
-                    // Desktop layout - side by side buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton.icon(
-                          onPressed: () async {
-                            final url =
-                                '/Seyha_Suos.pdf'; // For web, this will work if the PDF is in the web/ directory
-                            final uri = Uri.parse(url);
-                            if (await launcher.canLaunchUrl(uri)) {
-                              await launcher.launchUrl(
-                                uri,
-                                mode: launcher.LaunchMode.externalApplication,
-                              );
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: const Text('Could not open CV'),
-                                  backgroundColor: Colors.red,
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              );
-                            }
-                          },
-                          icon: const Icon(Icons.download),
-                          label: const Text('Download CV'),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 12,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 16),
-                        OutlinedButton.icon(
-                          onPressed: () {
-                            Provider.of<PortfolioProvider>(
-                                  context,
-                                  listen: false,
-                                ).selectedIndex =
-                                4;
-                          },
-                          icon: const Icon(Icons.mail),
-                          label: const Text('Contact Me'),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 12,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                ],
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
